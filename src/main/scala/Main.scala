@@ -1,35 +1,54 @@
 import scala.io.StdIn._
-case class Product(productId: String, productName: String, Quantity: Double, pricePerQuantity: Double)
 
-object Main extends App{
+
+
+object Main extends App {
+
+   var input: String = ""
+   val inventory = new Inventory()
+   while(true){
+    input = readLine().trim
+    if(input == "quit" || input == "q") System.exit(0)
+    val inputType = input.split("=>")(0).trim()
+    val inputValue = input.split("=>")(1).trim()
+
+    if(inputType == "INVENTORY") {
+      val prod_details = inputValue.split("\\|")
+      val produtId = prod_details(0).trim()
+      val productName = prod_details(1).trim()
+      val quantity = prod_details(2).trim().toDouble
+      val price = prod_details(3).trim().toDouble
+      
+      val product = new Product(produtId, productName, quantity, price)
+      inventory.addProduct(product)
   
-  var products: List[Product] = ???;
-  val input = readLine().trim()
 
+    }else if(inputType == "SALE"){
+      val sales = inputValue.split(";")
+      val bill = new Bill(inventory)
+      println("== BILL ==")
+      sales.foreach { sale =>
+        val saleDetails = sale.split("\\|")
+        val productId = saleDetails(0).trim()
+        val quantitySold = saleDetails(1).trim().toDouble
+           
+        inventory.updateProduct(productId, quantitySold)
+        bill.printProductBill(productId, quantitySold)       
+      }
+      println("== TOTAL ==")
+      bill.printTotal()
 
+    }else if(inputType == "STOCK"){
+        val productId = inputValue
+        val stock_detail = inventory.getStock(productId)
+        stock_detail match {
+          case (productName, quantity) =>  println(f"$productName - $quantity")
+          case _ => println("Product not found")
+        }
+   }else{
+    println("Invalid Input")
+   }   
+
+   }
   
-
-
-
-  def addProduct(productId: String, productName: String, quantity: Double, pricePerQuantity: Double): Unit = {
-      val product: Product = Product(productId, productName, quantity, pricePerQuantity)
-  
-      products = products :+ product
-  }
-  
-  def getProduct(details: String): Any = {
-    val parts = details.split("//|")
-    val productId = parts(0)
-    val productName = parts(1)
-    val quantity = parts(2).toDouble
-    val price = parts(3).toDouble
-
-    addProduct(productId, productName, quantity, price)
-  }
-
-  def getSales(sales: String): Any = {
-    val parts = sales.split(";")
-
-    
-  }
 }
