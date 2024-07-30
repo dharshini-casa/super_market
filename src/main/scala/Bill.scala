@@ -16,8 +16,12 @@ class Bill(inventory: Inventory) {
    def printProductBill(productId: String, quantitySold: Double) = {
      val netPrice = calculateNetPrice(productId, quantitySold)
      val product = inventory.getProduct(productId)
-     println(f"$productId - $product.productName - $quantitySold - $product.pricePerQuantity - N/A -$netPrice")
-   }
+     product match {
+       case Some(prod) => println(f"$productId - ${prod.productName}- $quantitySold - ${prod.pricePerQuantity} - N/A -$netPrice")
+       case None => print("Product not found")
+     }      
+    }
+   
    
    def printTotal() = {
     println(f"$totalAmount")

@@ -1,8 +1,6 @@
 class Inventory(var products: List[Product] = List()){
     def addProduct(product: Product) = {
         products = products :+ product
-        println(f"$products")
-
         println("Inventory added.")
     }
 
@@ -11,12 +9,15 @@ class Inventory(var products: List[Product] = List()){
        
     }
 
-    def updateProduct(productId: String, quantity: Double) = {
-        println(f"$products")
+    def updateProduct(productId: String, quantity: Int) = {
         val product = products.find(_.productId == productId)
-        println(f"$productId")
         product match {
-            case Some(product) => product.updateQuantity(quantity)
+            case Some(product) => {
+                if(product.quantity < quantity) 
+                   println(f"Error: Insufficient quanity to update product ${product.productName}.\n Available quantity: ${product.quantity}, Requested Quantity: $quantity")
+                else
+                   product.updateQuantity(quantity)
+            }
             case None => println("Product not found updated")
         }
     }

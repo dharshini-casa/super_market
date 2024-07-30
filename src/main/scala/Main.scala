@@ -1,7 +1,5 @@
 import scala.io.StdIn._
 
-
-
 object Main extends App {
 
    var input: String = ""
@@ -16,7 +14,7 @@ object Main extends App {
       val prod_details = inputValue.split("\\|")
       val produtId = prod_details(0).trim()
       val productName = prod_details(1).trim()
-      val quantity = prod_details(2).trim().toDouble
+      val quantity = prod_details(2).trim().toInt
       val price = prod_details(3).trim().toDouble
       
       val product = new Product(produtId, productName, quantity, price)
@@ -30,7 +28,7 @@ object Main extends App {
       sales.foreach { sale =>
         val saleDetails = sale.split("\\|")
         val productId = saleDetails(0).trim()
-        val quantitySold = saleDetails(1).trim().toDouble
+        val quantitySold = saleDetails(1).trim().toInt
            
         inventory.updateProduct(productId, quantitySold)
         bill.printProductBill(productId, quantitySold)       
