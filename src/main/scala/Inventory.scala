@@ -1,38 +1,50 @@
-class Inventory(var products: List[Product] = List()){
-    def addProduct(product: Product) = {
-        products = products :+ product
+import scala.collection.mutable.Map
+
+class Inventory(var stocks: Map[String, Double] = Map()){
+    def addProduct(productId: String, quantity: Double) = {
+        stocks += (productId -> quantity)
         println("Inventory added.")
     }
 
-    def getProduct(productId: String): Option[Product] = {
-        products.find(_.productId == productId)
-       
+    def removeProduct(productId: String) = {
+        stocks -= productId
+        println("Inventory removed.")
     }
-
-    def updateProduct(productId: String, quantity: Int) = {
-        val product = products.find(_.productId == productId)
-        product match {
-            case Some(product) => {
-                if(product.quantity < quantity) 
-                   println(f"Error: Insufficient quanity to update product ${product.productName}.\n Available quantity: ${product.quantity}, Requested Quantity: $quantity")
-                else
-                   product.updateQuantity(quantity)
-            }
-            case None => println("Product not found updated")
-        }
+    
+    def isProductPresent(productId: String): Boolean = {
+        val isPresent = stocks.contains(productId)
+        if (!isPresent) println("Product not found in inventory.")
+        isPresent
     }
-
-
 
     def getStock(productId: String) = {
-        val product = products.find(_.productId == productId)
-        product match {
-            case Some(product) => (product.productName, product.quantity)
-            case None => println("Product not found")
+        if(isProductPresent(productId)) {
+            val stock = stocks(productId)
+            stock
+        } else 0
+    }  
+
+    def checkAvailability(productId: String, quantity: Double): Boolean = {
+        var stock = 0.0
+        var isAvailable = false
+        if(isProductPresent(productId)){
+            stock = stocks(productId)  
+            isAvailable = stock >= quantity  
+            if(!isAvailable) println(f"Insufficient stock. Avaliable quantity: $stock, Requested quantity: $quantity")
+        }
+        isAvailable    
+
+    }
+  
+    def updateStock(productId: String, quantity: Double) = {
+        if(isProductPresent(productId)){
+            if(checkAvailability(productId, quantity)){
+                val stock = stocks(productId)
+                stocks(productId) = stock - quantity
+            }
         }
     }
+    
 
-    override def toString: String = {
-        products.map(p => s"${p.productId} - ${p.productName} - ${p.quantity} - ${p.pricePerQuantity}").mkString("\n")
-    }
 }
+ 

@@ -1,52 +1,25 @@
 import scala.io.StdIn._
+import AdminProcessor.findCommandType
 
 object Main extends App {
 
-   var input: String = ""
-   val inventory = new Inventory()
-   while(true){
-    input = readLine().trim
-    if(input == "quit" || input == "q") System.exit(0)
-    val inputType = input.split("=>")(0).trim()
-    val inputValue = input.split("=>")(1).trim()
+  var input: String = ""
+  println("\t\t\t\t\t\tWelcome to Super Market.!\n") 
+  println("Are you Administrator(a/A) or Customer(c/C)?\t\t\t\t")
+  input = readLine().trim.toLowerCase
+  if(isAdmin(input)){
+    println("Welcome Admin!")
+    println("Please enter admin password:\t\t\t")
+    val password = readLine().trim
+    val correct = Admin.checkPassword(password)
 
-    if(inputType == "INVENTORY") {
-      val prod_details = inputValue.split("\\|")
-      val produtId = prod_details(0).trim()
-      val productName = prod_details(1).trim()
-      val quantity = prod_details(2).trim().toInt
-      val price = prod_details(3).trim().toDouble
-      
-      val product = new Product(produtId, productName, quantity, price)
-      inventory.addProduct(product)
-  
-
-    }else if(inputType == "SALE"){
-      val sales = inputValue.split(";")
-      val bill = new Bill(inventory)
-      println("== BILL ==")
-      sales.foreach { sale =>
-        val saleDetails = sale.split("\\|")
-        val productId = saleDetails(0).trim()
-        val quantitySold = saleDetails(1).trim().toInt
-           
-        inventory.updateProduct(productId, quantitySold)
-        bill.printProductBill(productId, quantitySold)       
+    if(correct){
+      AdminProcessor.menu()
+      while(true){
+           val command = readLine().trim()
+           AdminProcessor.findCommandType(command)
       }
-      println("== TOTAL ==")
-      bill.printTotal()
-
-    }else if(inputType == "STOCK"){
-        val productId = inputValue
-        val stock_detail = inventory.getStock(productId)
-        stock_detail match {
-          case (productName, quantity) =>  println(f"$productName - $quantity")
-          case _ => println("Product not found")
-        }
-   }else{
-    println("Invalid Input")
-   }   
-
-   }
-  
+    }
+  }
+  def isAdmin(input: String): Boolean = input == "a"
 }
