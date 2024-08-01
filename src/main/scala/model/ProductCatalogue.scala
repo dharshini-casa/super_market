@@ -1,9 +1,4 @@
 
-
-case class Product(productId: String, productName: String, pricePerQuantity: Double)
-
-
-
 case class ProductCatalogue(var products: Map[String, Product] = Map()){
 
     def addProduct(productId: String, productName: String, pricePerQuantity: Double) = {

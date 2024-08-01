@@ -1,4 +1,4 @@
-case class BillProcessor(order: Order, productCatalogue: ProductCatalogue) {
+case class BillGenerator(order: Order, productCatalogue: ProductCatalogue) {
    
     def calculateNetPrice(price: Double, quantity: Double) = price * quantity
     
@@ -24,4 +24,4 @@ case class BillProcessor(order: Order, productCatalogue: ProductCatalogue) {
 }
 
 
-case class BillItem(product: Option[Product], quantityBought: Double, netPrice: Double)
+

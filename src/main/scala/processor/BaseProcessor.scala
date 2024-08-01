@@ -1,10 +1,6 @@
-object SuperMarket {
-  val productCatalogue = ProductCatalogue()
-  val inventory = Inventory()
-  val order = Order()
-}
 
-trait Processor {
+
+trait BaseProcessor {
   val productCatalogue = SuperMarket.productCatalogue
   val inventory = SuperMarket.inventory
   val order = SuperMarket.order
@@ -13,7 +9,7 @@ trait Processor {
 }
 
 
-object AdminProcessor extends Processor{
+object AdminCommandProcessor extends BaseProcessor{
       
     def menu(): Unit = {
         println("1) To add product use inventory command")
@@ -30,9 +26,9 @@ object AdminProcessor extends Processor{
     
 
     def findCommandType(input: String) = {
-        if(input.startsWith("INVENTORY")) InventoryProcessor.updateInventory(input)
-        else if(input.startsWith("SALE")) SaleProcessor.makeSale(input)
-        else if(input.startsWith("STOCK")) StockProcessor.printStock(input)
+        if(input.startsWith("INVENTORY")) InventoryCommandProcessor.updateInventory(input)
+        else if(input.startsWith("SALE")) SaleCommandProcessor.makeSale(input)
+        else if(input.startsWith("STOCK")) StockCommandProcessor.printStock(input)
         else if(input.startsWith("exit") || input.startsWith("EXIT")){
           println("Administor exited.")
           System.exit(0)
@@ -43,7 +39,7 @@ object AdminProcessor extends Processor{
     
 }
 
-object InventoryProcessor extends Processor{
+object InventoryCommandProcessor extends BaseProcessor{
 
   def updateInventory(input: String) = {
       val value = InputParser.arrowDelimiterParse(input)
@@ -61,7 +57,7 @@ object InventoryProcessor extends Processor{
   }
 }
 
-object SaleProcessor extends Processor{
+object SaleCommandProcessor extends BaseProcessor{
 
   def makeSale(input: String) = {
       println("Inside makeSale")
@@ -82,14 +78,14 @@ object SaleProcessor extends Processor{
 
   def makeBill = {
       println("Inside makeBill")
-      val billProcessor = BillProcessor(order, productCatalogue)
+      val billProcessor = BillGenerator(order, productCatalogue)
       val bill = billProcessor.generateBill
       val billPrinter = BillPrinter(bill)
       billPrinter.printBill
   }
 }
 
-object StockProcessor extends Processor{
+object StockCommandProcessor extends BaseProcessor{
 
   def printStock(input: String) = {
     val productId = InputParser.arrowDelimiterParse(input)

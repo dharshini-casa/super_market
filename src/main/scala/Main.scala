@@ -1,5 +1,4 @@
 import scala.io.StdIn._
-import AdminProcessor.findCommandType
 
 object Main extends App {
 
@@ -14,10 +13,10 @@ object Main extends App {
     val correct = Admin.checkPassword(password)
 
     if(correct){
-      AdminProcessor.menu()
+      AdminCommandProcessor.menu()
       while(true){
            val command = readLine().trim()
-           AdminProcessor.findCommandType(command)
+           AdminCommandProcessor.findCommandType(command)
       }
     }
   }
