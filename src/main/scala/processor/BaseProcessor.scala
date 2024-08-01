@@ -1,5 +1,6 @@
-
-
+package processor
+import mainSys.*
+import model.OrderItem
 trait BaseProcessor {
   val productCatalogue = SuperMarket.productCatalogue
   val inventory = SuperMarket.inventory
@@ -30,7 +31,7 @@ object AdminCommandProcessor extends BaseProcessor{
         else if(input.startsWith("SALE")) SaleCommandProcessor.makeSale(input)
         else if(input.startsWith("STOCK")) StockCommandProcessor.printStock(input)
         else if(input.startsWith("exit") || input.startsWith("EXIT")){
-          println("Administor exited.")
+          println("Exited.")
           System.exit(0)
         }
         else println("Invalid command")

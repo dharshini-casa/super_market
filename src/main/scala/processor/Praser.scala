@@ -1,3 +1,4 @@
+package processor
 trait  Parser {
   def parse(input: String): String
 }

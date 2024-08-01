@@ -1,3 +1,4 @@
+package model
 
 case class ProductCatalogue(var products: Map[String, Product] = Map()){
 

@@ -1,3 +1,5 @@
+package processor
+import model.Bill
 class BillPrinter(bill: Bill){
 
   def printBill = {

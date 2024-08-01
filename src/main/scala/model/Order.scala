@@ -1,3 +1,5 @@
+package model
+import utilites.{OrderIdGenerator}
 case class Order(customerId: String = "", var items: List[OrderItem] = List()) {
   val orderId = OrderIdGenerator.getOrderId()
 

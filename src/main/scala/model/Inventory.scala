@@ -1,3 +1,5 @@
+package model
+
 import scala.collection.mutable.Map
 
 class Inventory(var stocks: Map[String, Double] = Map()){

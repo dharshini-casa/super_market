@@ -1,3 +1,5 @@
+package utilites
+
 trait IdGenerator {
   
 }

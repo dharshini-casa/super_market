@@ -1,3 +1,5 @@
+package processor 
+import model._
 case class BillGenerator(order: Order, productCatalogue: ProductCatalogue) {
    
     def calculateNetPrice(price: Double, quantity: Double) = price * quantity
